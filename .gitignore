@@ -1,0 +1,14 @@
+node_modules
+*.tsbuildinfo
+
+## editors
+/.idea
+/.vscode
+
+## build artifacts
+dist
+coverage
+doc
+
+
+src/generated

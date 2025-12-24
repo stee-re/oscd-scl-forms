@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "oscd-template-menu.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "OscdTemplateMenu",
+          "members": [
+            {
+              "kind": "field",
+              "name": "scopedElements",
+              "type": {
+                "text": "object"
+              },
+              "static": true,
+              "default": "{ /* * add any web-components this component will reference here. * E.g. * \"oscd-button\": OscdButton, * * Important! * Importing the web-component class should NOT result in the web-component being registered with the global customElements registry. * Otherwise it will fail to render at all. You'll only get an empty tag, no web component. */ }"
+            },
+            {
+              "kind": "field",
+              "name": "editor",
+              "type": {
+                "text": "Transactor<EditV2>"
+              },
+              "attribute": "editor"
+            },
+            {
+              "kind": "field",
+              "name": "docs",
+              "type": {
+                "text": "Record<string, XMLDocument>"
+              },
+              "attribute": "docs"
+            },
+            {
+              "kind": "field",
+              "name": "doc",
+              "type": {
+                "text": "XMLDocument | undefined"
+              },
+              "attribute": "doc"
+            },
+            {
+              "kind": "field",
+              "name": "docName",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "docName"
+            },
+            {
+              "kind": "field",
+              "name": "docVersion",
+              "type": {
+                "text": "unknown | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "locale"
+            },
+            {
+              "kind": "method",
+              "name": "run"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "editor",
+              "type": {
+                "text": "Transactor<EditV2>"
+              },
+              "fieldName": "editor"
+            },
+            {
+              "name": "docs",
+              "type": {
+                "text": "Record<string, XMLDocument>"
+              },
+              "fieldName": "docs"
+            },
+            {
+              "name": "doc",
+              "type": {
+                "text": "XMLDocument | undefined"
+              },
+              "fieldName": "doc"
+            },
+            {
+              "name": "docName",
+              "type": {
+                "text": "string | undefined"
+              },
+              "fieldName": "docName"
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string | undefined"
+              },
+              "fieldName": "locale"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "ScopedElementsMixin",
+              "package": "@open-wc/scoped-elements/lit-element.js"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "OscdTemplateMenu",
+            "module": "oscd-template-menu.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
