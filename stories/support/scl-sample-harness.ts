@@ -23,6 +23,8 @@ export class SclSampleHarness extends LitElement {
 
   @property({ type: String }) version = '2003';
 
+  @property({ type: String }) elementName = 'SCL';
+
   @state() private doc: XMLDocument | null = null;
 
   @state() private error?: string;
@@ -99,7 +101,7 @@ export class SclSampleHarness extends LitElement {
         : html``}
       <div class="content">
         <section class="form">
-          ${getForm('SCL', {
+          ${getForm(this.elementName, {
             version: this.version as SclVersion,
             doc: this.doc,
           })}
@@ -107,8 +109,8 @@ export class SclSampleHarness extends LitElement {
         <section class="editor">
           <div class="editor-header">SCL XML (live)</div>
           <ace-editor
-            mode="xml"
-            theme="ace/theme/textmate"
+            mode="ace/mode/xml"
+            theme="ace/theme/solarized_light"
             .value=${this.xmlText}
             base-path=${aceBasePath}
             style="width: 100%; height: 100%;"
