@@ -3,29 +3,55 @@ import { property, state } from 'lit/decorators.js';
 import { getForm, SclVersion } from '../../src/form-api.js';
 import 'ace-custom-element';
 
+const xmlSerializer = new XMLSerializer();
+const sclDoc = new DOMParser().parseFromString(
+  `<?xml version="1.0" encoding="UTF-8"?>
+<SCL xmlns="http://www.iec.ch/61850/2003/SCL" version="2003" revision="B">
+  <Header id="sample-scl" version="1.0.0" toolID="oscd-scl-forms-sample" />
+  <IED name="IED1">
+    <AccessPoint name="AP1">
+      <Server>
+        <LDevice inst="LD1" />
+      </Server>
+    </AccessPoint>
+  </IED>
+</SCL>`,
+  'application/xml',
+);
+
+function serializeXml(doc?: XMLDocument): string {
+  if (!doc) {
+    console.warn('No XMLDocument provided, returning empty string');
+    return '';
+  }
+  if (typeof doc === 'string') {
+    console.trace(
+      'WTF are you asking me to serialize a fuppen string for??:',
+      doc,
+    );
+    return doc;
+  }
+  try {
+    return xmlSerializer.serializeToString(doc);
+  } catch (error) {
+    console.error(
+      error,
+      'Failed serializing XMLDocument (unable to display):',
+      doc,
+    );
+    return '';
+  }
+}
+
 const aceBasePath = new URL(
   '../../node_modules/ace-custom-element/dist/ace/',
   import.meta.url,
 ).href;
 
-function parseXml(xml: string): XMLDocument {
-  const parser = new DOMParser();
-  const parsed = parser.parseFromString(xml, 'application/xml');
-  const parseError = parsed.querySelector('parsererror');
-  if (parseError) {
-    throw new Error(parseError.textContent ?? 'Invalid XML');
-  }
-  return parsed;
-}
-
 export class SclSampleHarness extends LitElement {
-  @property({ type: String }) sample = '';
-
   @property({ type: String }) version = '2003';
 
   @property({ type: String }) elementName = 'SCL';
-
-  @state() private doc: XMLDocument | null = null;
 
   @state() private error?: string;
 
@@ -38,12 +64,10 @@ export class SclSampleHarness extends LitElement {
 
   private resetToSample(): void {
     try {
-      this.doc = parseXml(this.sample);
-      this.xmlText = this.sample;
+      this.xmlText = serializeXml(sclDoc);
       this.error = undefined;
     } catch (err) {
       this.error = (err as Error).message;
-      this.doc = null;
       this.xmlText = '';
     }
   }
@@ -57,21 +81,21 @@ export class SclSampleHarness extends LitElement {
 
     const text = await file.text();
     try {
-      this.doc = parseXml(text);
       this.xmlText = text;
       this.error = undefined;
     } catch (err) {
       this.error = (err as Error).message;
-      this.doc = null;
       this.xmlText = text;
     }
   }
 
   private handleAceChange(event: CustomEvent<string>): void {
     const text = event.detail;
+    if (typeof text !== 'string') {
+      return;
+    }
     this.xmlText = text;
     try {
-      this.doc = parseXml(text);
       this.error = undefined;
     } catch (err) {
       this.error = (err as Error).message;
@@ -103,7 +127,7 @@ export class SclSampleHarness extends LitElement {
         <section class="form">
           ${getForm(this.elementName, {
             version: this.version as SclVersion,
-            doc: this.doc,
+            doc: sclDoc,
           })}
         </section>
         <section class="editor">

@@ -89,6 +89,12 @@ await emitFormsIndex(generatedDir, elementsByName, versions);
 
 await writeFile(join(generatedDir, 'versions.ts'), genVersions(), 'utf8');
 
+await writeFile(
+  join(generatedDir, 'schema-models.json'),
+  JSON.stringify(models, null, 2),
+  'utf8',
+);
+
 console.log(
   `Generated placeholder artifacts for versions: ${versions.join(', ')}`,
 );

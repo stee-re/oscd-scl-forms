@@ -1,7 +1,8 @@
 import type { Preview } from '@storybook/web-components';
 
-const sclDoc = new DOMParser().parseFromString(
-  `<?xml version="1.0" encoding="UTF-8"?>
+function getInitialSclDoc(): XMLDocument {
+  return new DOMParser().parseFromString(
+    `<?xml version="1.0" encoding="UTF-8"?>
 <SCL xmlns="http://www.iec.ch/61850/2003/SCL" version="2003" revision="B">
   <Header id="sample-scl" version="1.0.0" toolID="oscd-scl-forms-sample" />
   <IED name="IED1">
@@ -12,15 +13,24 @@ const sclDoc = new DOMParser().parseFromString(
     </AccessPoint>
   </IED>
 </SCL>`,
-  'application/xml',
-);
+    'application/xml',
+  );
+}
 
 const preview: Preview = {
   globalTypes: {
-    sclDoc: XMLDocument,
+    sclDoc: {
+      name: 'SCL Document',
+      description: 'Sample SCL XML Document',
+      defaultValue: getInitialSclDoc(),
+      toolbar: {
+        icon: 'document',
+        items: [],
+      },
+    },
   },
   initialGlobals: {
-    sclDoc,
+    sclDoc: getInitialSclDoc(),
   },
   parameters: {
     controls: { expanded: true },

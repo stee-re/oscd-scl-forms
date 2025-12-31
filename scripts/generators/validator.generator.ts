@@ -32,7 +32,7 @@ export async function emitValidatorsIndex(
 
   const content = `${header}${imports.join('\n')}\n\nimport type { ZodTypeAny } from 'zod';\n\nexport const validatorSchemas: Record<string, Record<string, ZodTypeAny>> = {\n${body.join(',\n')}\n};\n`;
 
-  return writeToFile(join(baseDir, `forms.ts`), content);
+  return writeToFile(join(baseDir, `validators.ts`), content);
 }
 
 export async function emitValidatorFile(
